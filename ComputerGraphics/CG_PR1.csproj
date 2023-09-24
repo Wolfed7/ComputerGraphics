@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="1.89.9.1" />
+    <PackageReference Include="ImGui.NET" Version="1.89.9.2" />
     <PackageReference Include="OpenTK" Version="4.8.0" />
   </ItemGroup>
 
@@ -20,10 +20,10 @@
     <None Update="data\shaders\pointShader.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\shaders\shader.frag">
+    <None Update="data\shaders\triangleShader.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\shaders\shader.vert">
+    <None Update="data\shaders\triangleShader.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

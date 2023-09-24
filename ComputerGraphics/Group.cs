@@ -9,39 +9,54 @@ namespace CG_PR1;
 
 public class Group
 {
-   private Dictionary<uint, Triangle> _container;
+   private Dictionary<uint, Triangle> _objects;
 
-   public List<uint> IngroupIndeces 
-      => _container.Keys.ToList();
+   public List<uint> ObjectIndeces
+      => _objects.Keys.Order().ToList();
 
-   public uint? lastCreatedObject
-      => IngroupIndeces.Count == 0 ? null : IngroupIndeces.Max();
+   public uint Count
+   => (uint)_objects.Count;
 
-   public Group() 
+   public uint? LastCreatedObject
+      => ObjectIndeces.Count == 0 ? null : ObjectIndeces.Max();
+
+   public bool IsVisible { get; set; }
+
+   //public bool IsTransparent { get; set; }
+
+
+   public Group()
    {
-      _container = new();
+      _objects = new();
+      IsVisible = true;
    }
 
    public Triangle? this[uint i]
    {
       get
       {
-         if (!_container.ContainsKey(i))
+         if (!_objects.ContainsKey(i))
             return null;
          else
-            return _container[i];
+            return _objects[i];
       }
    }
 
-public void Add(Triangle triangle)
+   public void Delete()
    {
-      uint newInGroupIndex = _container.Count == 0 ? 0 : _container.Keys.Max() + 1;
-      _container[newInGroupIndex] = triangle;
+      foreach (var obj in _objects)
+         obj.Value.Dispose();
    }
 
-   public void Remove(uint inGroupIndex)
+   public void AddObject(Triangle triangle)
    {
-      _container[inGroupIndex].Dispose();
-      _container.Remove(inGroupIndex);
+      uint newInGroupIndex = Count == 0 ? 0 : _objects.Keys.Max() + 1;
+      _objects[newInGroupIndex] = triangle;
+   }
+
+   public void DeleteObject(uint inGroupIndex)
+   {
+      _objects[inGroupIndex].Dispose();
+      _objects.Remove(inGroupIndex);
    }
 }

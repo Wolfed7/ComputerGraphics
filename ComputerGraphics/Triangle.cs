@@ -1,13 +1,5 @@
 ﻿using OpenTK.Mathematics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL4;
-using System.Drawing;
-using static CG_PR1.Triangle;
 
 namespace CG_PR1;
 
@@ -23,12 +15,12 @@ public class Triangle : IDisposable
    public VertexArrayObject _vao;
    public VertexPositionColor[] Vertices { get; private set; }
    public Color4 Color { get; private set; }
-   public bool IsFrameVisible { get; set; }
+   public bool IsBoundaryVisible { get; set; }
    public bool IsVerticesVisible { get; set; }
 
    public Triangle(VertexPositionColor[] vertices, Color4 color)
    {
-      IsFrameVisible = true;
+      IsBoundaryVisible = true;
       IsVerticesVisible = false;
       Vertices = vertices; 
       Color = color;
@@ -54,17 +46,20 @@ public class Triangle : IDisposable
       GL.Uniform4(GL.GetUniformLocation(activeShaderHandle, "innerColor"), Color4.White);
       GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
 
-      if (IsFrameVisible is true)
+      if (IsVerticesVisible is true ? IsVerticesVisible : oneTimeVisible)
+      {
+         GL.Uniform4(GL.GetUniformLocation(activeShaderHandle, "innerColor"), Color4.Black);
+         GL.DrawArrays(PrimitiveType.Points, 0, 3);
+      }
+
+      if (IsBoundaryVisible is true)
       {
          GL.Uniform4(GL.GetUniformLocation(activeShaderHandle, "color"), Color4.Black);
          GL.DrawArrays(PrimitiveType.LineLoop, 0, 3);
       }
 
       GL.Uniform4(GL.GetUniformLocation(activeShaderHandle, "color"), Color4.White);
-      if (IsVerticesVisible is true ? IsVerticesVisible : oneTimeVisible)
-      {
-         GL.DrawArrays(PrimitiveType.Points, 0, 3);
-      }
+
 
       _vao.Unbind();
    }
@@ -77,7 +72,8 @@ public class Triangle : IDisposable
 
    public void SetVertexColor(VertexNumber vertexNumber, Color4 color)
    {
-      Vertices[(int)vertexNumber] = new VertexPositionColor(Vertices[(int)vertexNumber].Position, color);
+      var index = (int)vertexNumber;
+      Vertices[index] = new VertexPositionColor(Vertices[index].Position, color);
       _vao.VertexBufferObject.Update(Vertices);
    }
 
@@ -91,7 +87,8 @@ public class Triangle : IDisposable
 
    public void MoveVertice(VertexNumber vertexNumber, Vector2 position)
    {
-      Vertices[(int)vertexNumber] = new VertexPositionColor(position, Vertices[(int)vertexNumber].Color);
+      var index = (int)vertexNumber;
+      Vertices[index] = new VertexPositionColor(position, Vertices[index].Color);
       _vao.VertexBufferObject.Update(Vertices);
    }
 
@@ -104,8 +101,8 @@ public class Triangle : IDisposable
 
       for (int i = 0; i < Vertices.Length; i++)
       {
-         var newPosX = verticesPositions[i].X > 1.0f ? verticesPositions[i].X : 1.0f;
-         var newPosY = verticesPositions[i].Y > 1.0f ? verticesPositions[i].X : 1.0f;
+         var newPosX = verticesPositions[i].X > 1.0f ? 1.0f : verticesPositions[i].X;
+         var newPosY = verticesPositions[i].Y > 1.0f ? 1.0f : verticesPositions[i].Y;
          Vector2 newPos = new Vector2(newPosX, newPosY);
          Vertices[i] = new VertexPositionColor(newPos, Vertices[i].Color);
       }

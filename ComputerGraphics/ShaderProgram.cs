@@ -65,6 +65,11 @@ public sealed class ShaderProgram : IDisposable
       Dispose();
    }
 
+   public void Use()
+   {
+      GL.UseProgram(Handle);
+   }
+
    public void Dispose()
    {
       if (_disposed)
