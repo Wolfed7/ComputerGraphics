@@ -22,8 +22,6 @@ public class CommandModeEdit : CommandModeState
 {
    public override void OnKeyDown(Scene scene, KeyboardKeyEventArgs e)
    {
-      const float colorChangingSensivity = 0.05f;
-
       var currentGroupIndex = scene.CurrentGroup;
       var currentObjectIndex = scene.CurrentObject;
       var currentGroup = scene[currentGroupIndex];
@@ -92,6 +90,10 @@ public class CommandModeEdit : CommandModeState
          return;
       }
 
+      Vector2 shift = new Vector2(0.0f, 0.0f);
+      const float colorChangingSensitivity = 0.05f;
+      const float positionChangingSensitivity = 0.01f;
+
       switch (e.Key)
       {
          // Changing color of CurrentObject
@@ -101,8 +103,8 @@ public class CommandModeEdit : CommandModeState
             Color4 newColor = new()
             {
                R = e.Modifiers == KeyModifiers.Alt ?
-                  Math.Max(currentObject.Color.R - colorChangingSensivity, 0.0f)
-                  : Math.Min(currentObject.Color.R + colorChangingSensivity, 1.0f),
+                  Math.Max(currentObject.Color.R - colorChangingSensitivity, 0.0f)
+                  : Math.Min(currentObject.Color.R + colorChangingSensitivity, 1.0f),
                G = currentObject.Color.G,
                B = currentObject.Color.B,
                A = currentObject.Color.A
@@ -118,8 +120,8 @@ public class CommandModeEdit : CommandModeState
             {
                R = currentObject.Color.R,
                G = e.Modifiers == KeyModifiers.Alt ?
-                  Math.Max(currentObject.Color.G - colorChangingSensivity, 0.0f)
-                  : Math.Min(currentObject.Color.G + colorChangingSensivity, 1.0f),
+                  Math.Max(currentObject.Color.G - colorChangingSensitivity, 0.0f)
+                  : Math.Min(currentObject.Color.G + colorChangingSensitivity, 1.0f),
                B = currentObject.Color.B,
                A = currentObject.Color.A
             };
@@ -135,8 +137,8 @@ public class CommandModeEdit : CommandModeState
                R = currentObject.Color.R,
                G = currentObject.Color.G,
                B = e.Modifiers == KeyModifiers.Alt ?
-                  Math.Max(currentObject.Color.B - colorChangingSensivity, 0.0f)
-                  : Math.Min(currentObject.Color.B + colorChangingSensivity, 1.0f),
+                  Math.Max(currentObject.Color.B - colorChangingSensitivity, 0.0f)
+                  : Math.Min(currentObject.Color.B + colorChangingSensitivity, 1.0f),
                A = currentObject.Color.A
             };
 
@@ -144,8 +146,88 @@ public class CommandModeEdit : CommandModeState
             break;
          }
 
+
+         // Changing position of current object
+
+
+         case Keys.Left:
+         {
+            shift.X -= positionChangingSensitivity;
+            if (e.Modifiers == KeyModifiers.Control)
+               MoveGroup();
+            else
+               MoveTriangle();
+            break;
+         }
+         case Keys.Up:
+         {
+            shift.Y += positionChangingSensitivity;
+            if (e.Modifiers == KeyModifiers.Control)
+               MoveGroup();
+            else
+               MoveTriangle();
+            break;
+         }
+         case Keys.Down:
+         {
+            shift.Y -= positionChangingSensitivity;
+            if (e.Modifiers == KeyModifiers.Control)
+               MoveGroup();
+            else
+               MoveTriangle();
+            break;
+         }
+         case Keys.Right:
+         {
+            shift.X += positionChangingSensitivity;
+            if (e.Modifiers == KeyModifiers.Control)
+               MoveGroup();
+            else
+               MoveTriangle();
+            break;
+         }
+
          default:
             break;
+      }
+
+      void MoveGroup()
+      {
+         foreach (var objectIndex in currentGroup.ObjectIndeces)
+         {
+            var triangle = currentGroup[objectIndex];
+
+            Vector2[] vertexPositions = new Vector2[triangle.Vertices.Length];
+            for (int i = 0; i < vertexPositions.Length; i++)
+            {
+               vertexPositions[i] = triangle.Vertices[i].Position;
+            }
+
+            for (int i = 0; i < triangle.Vertices.Length; i++)
+            {
+               var vert = new System.Numerics.Vector2(vertexPositions[i].X, vertexPositions[i].Y);
+               Vector2 newVertex = new Vector2(vert.X + shift.X, vert.Y + shift.Y);
+               triangle.MoveVertice((Triangle.VertexNumber)i, newVertex);
+            }
+         }
+      }
+
+      void MoveTriangle()
+      {
+         var triangle = currentGroup[currentObjectIndex.Value];
+
+         Vector2[] vertexPositions = new Vector2[triangle.Vertices.Length];
+         for (int i = 0; i < vertexPositions.Length; i++)
+         {
+            vertexPositions[i] = triangle.Vertices[i].Position;
+         }
+
+         for (int i = 0; i < triangle.Vertices.Length; i++)
+         {
+            var vert = new System.Numerics.Vector2(vertexPositions[i].X, vertexPositions[i].Y);
+            Vector2 newVertex = new Vector2(vert.X + shift.X, vert.Y + shift.Y);
+            triangle.MoveVertice((Triangle.VertexNumber)i, newVertex);
+         }
       }
    }
 
