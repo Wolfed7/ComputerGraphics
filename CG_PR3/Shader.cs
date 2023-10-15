@@ -174,6 +174,17 @@ namespace CG_PR3
       }
 
       /// <summary>
+      /// Set a uniform Vector2 on this shader.
+      /// </summary>
+      /// <param name="name">The name of the uniform</param>
+      /// <param name="data">The data to set</param>
+      public void SetVector2(string name, Vector2 data)
+      {
+         GL.UseProgram(Handle);
+         GL.Uniform2(_uniformLocations[name], data);
+      }
+
+      /// <summary>
       /// Set a uniform Vector3 on this shader.
       /// </summary>
       /// <param name="name">The name of the uniform</param>
@@ -182,6 +193,17 @@ namespace CG_PR3
       {
          GL.UseProgram(Handle);
          GL.Uniform3(_uniformLocations[name], data);
+      }
+
+      /// <summary>
+      /// Set a uniform Vector3 on this shader.
+      /// </summary>
+      /// <param name="name">The name of the uniform</param>
+      /// <param name="data">The data to set</param>
+      public void SetBool(string name, bool data)
+      {
+         GL.UseProgram(Handle);
+         GL.Uniform1(_uniformLocations[name], data ? 1 : 0);
       }
    }
 }

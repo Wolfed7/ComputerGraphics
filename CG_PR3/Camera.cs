@@ -1,8 +1,10 @@
 using OpenTK.Mathematics;
 using System;
+using System.Drawing;
 
 namespace CG_PR3
 {
+
    // This is the camera class as it could be set up after the tutorials on the website.
    // It is important to note there are a few ways you could have set up this camera.
    // For example, you could have also managed the player input inside the camera class,
@@ -28,17 +30,24 @@ namespace CG_PR3
       // The field of view of the camera (radians)
       private float _fov = MathHelper.PiOver2;
 
-      public Camera(Vector3 position, float aspectRatio)
+      public Vector2i Size {  get; set; }
+      
+
+      public bool IsPerspective { get; set; }
+
+      public Camera(Vector3 position, Vector2i size)
       {
+         IsPerspective = true;
          Position = position;
-         AspectRatio = aspectRatio;
+         Size = size;
+         //_aspectRatio = Size.X / (float)Size.Y;
       }
 
       // The position of the camera
       public Vector3 Position { get; set; }
 
       // This is simply the aspect ratio of the viewport, used for the projection matrix.
-      public float AspectRatio { private get; set; }
+      private float _aspectRatio => Size.X / (float)Size.Y;
 
       public Vector3 Front => _front;
 
@@ -95,7 +104,22 @@ namespace CG_PR3
       // Get the projection matrix using the same method we have used up until this point
       public Matrix4 GetProjectionMatrix()
       {
-         return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
+         if(IsPerspective is true)
+         {
+            return Matrix4.CreatePerspectiveFieldOfView(_fov, _aspectRatio, 0.01f, 100f);
+         }
+         else
+         {
+            //float left = -100.0f;
+            //float right = 100.0f;
+            //float bottom = -100.0f;
+            //float top = 100.0f;
+            //float near = 0.1f;
+            //float far = 1.0f;
+            var denom = 1400.0f;
+            return Matrix4.CreateOrthographicOffCenter(-Size.X / denom, Size.X / denom, -Size.Y / denom, Size.Y / denom, 0.1f, 100.0f);
+            //return Matrix4.CreateOrthographicOffCenter(left, right, bottom, top, near, far);
+         }
       }
 
       // This function is going to update the direction vertices using some of the math learned in the web tutorials.

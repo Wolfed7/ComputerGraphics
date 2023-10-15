@@ -10,9 +10,37 @@
   <ItemGroup>
     <PackageReference Include="ImGui.NET" Version="1.89.9.2" />
     <PackageReference Include="OpenTK" Version="4.8.0" />
+    <PackageReference Include="StbImageSharp" Version="2.27.13" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="data\Resources\container.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\Crate\container2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\Crate\container2_specular.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\Crate\modern-crate-diffuse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\green-grass.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\ModernCrate\modern-crate-diffuse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\ModernCrate\modern-crate-specular.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\ModernCrate\robbert-mouthaan-cratematerial-01-metallic-copy.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\Resources\silver.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\shaders\lighting.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
