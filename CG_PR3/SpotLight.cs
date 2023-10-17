@@ -37,6 +37,16 @@ namespace CG_PR3
                  MathF.Cos(MathHelper.DegreesToRadians(12.5f)),
                  MathF.Cos(MathHelper.DegreesToRadians(17.5f)));
 
+      public static SpotLight Laser
+   => new(new Vector3(0.0f),
+           new Vector3(0.0f),
+           new Vector3(0.8f, 0.0f, 0.0f),
+           new Vector3(0.1f, 0.0f, 0.0f),
+           0.09f,
+           0.032f,
+           MathF.Cos(MathHelper.DegreesToRadians(0.2f)),
+           MathF.Cos(MathHelper.DegreesToRadians(0.4f)));
+
       public SpotLight(Vector3 position,
                        Vector3 ambient,
                        Vector3 diffuse,
@@ -46,6 +56,8 @@ namespace CG_PR3
                        float cutOff,
                        float outerCutOff)
       {
+         IsTurnedOn = false;
+
          Position = position;
          Ambient = ambient;
          Diffuse = diffuse;
@@ -70,9 +82,18 @@ namespace CG_PR3
       {
          UpdatePositionUniform(lightingShader);
          UpdateDirectionUniform(lightingShader);
-         lightingShader.SetVector3("spotLight.ambient", Ambient);
-         lightingShader.SetVector3("spotLight.diffuse", Diffuse);
-         lightingShader.SetVector3("spotLight.specular", Specular);
+         if (IsTurnedOn is false)
+         {
+            lightingShader.SetVector3("spotLight.ambient", new Vector3(0.0f));
+            lightingShader.SetVector3("spotLight.diffuse", new Vector3(0.0f));
+            lightingShader.SetVector3("spotLight.specular", new Vector3(0.0f));
+         }
+         else
+         {
+            lightingShader.SetVector3("spotLight.ambient", Ambient);
+            lightingShader.SetVector3("spotLight.diffuse", Diffuse);
+            lightingShader.SetVector3("spotLight.specular", Specular);
+         }
 
          lightingShader.SetFloat("spotLight.constant", Constant);
          lightingShader.SetFloat("spotLight.linear", Linear);
@@ -86,7 +107,7 @@ namespace CG_PR3
       {
          IsTurnedOn = isTurnedOn;
 
-         if (isTurnedOn is true)
+         if (IsTurnedOn is false)
          {
             lightingShader.SetVector3("spotLight.ambient", new Vector3(0.0f));
             lightingShader.SetVector3("spotLight.diffuse", new Vector3(0.0f));

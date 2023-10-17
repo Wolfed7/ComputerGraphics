@@ -92,9 +92,6 @@ void main()
        materialSpecular = material.specular;
 	}
 
-	//materialDiffuse = vec3(texture(material.diffuseMap, TexCoords));
-    //materialSpecular = vec3(texture(material.specularMap, TexCoords));
-
     //properties
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);

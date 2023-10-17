@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK.Windowing.Common;
+using System;
 
 namespace CG_PR3
 {
@@ -8,6 +9,8 @@ namespace CG_PR3
       {
          using (Window window = new Window())
          {
+            //window.UpdateFrequency = 60;
+            window.VSync = VSyncMode.On;
             window.Run();
          }
       }
