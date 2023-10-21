@@ -116,7 +116,10 @@ namespace CG_PR3
             //float top = 100.0f;
             //float near = 0.1f;
             //float far = 1.0f;
-            var denom = 1400.0f;
+
+            //var denom = 1400.0f;
+            var denom = 400.0f;
+
             return Matrix4.CreateOrthographicOffCenter(-Size.X / denom, Size.X / denom, -Size.Y / denom, Size.Y / denom, 0.1f, 100.0f);
             //return Matrix4.CreateOrthographicOffCenter(left, right, bottom, top, near, far);
          }

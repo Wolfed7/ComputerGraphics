@@ -82,7 +82,8 @@ public class Window : GameWindow
       new (0.3f, 1.3f, 2.0f),
       new (0.7f, 0.2f, -2.0f),
       new (2.3f, -3.3f, -4.0f),
-      new (-4.0f, 2.0f, -1.0f),
+      new (2.0f, 2.0f, 1.0f),
+
       new (0.0f, 0.0f, -3.0f)
    };
 
@@ -164,7 +165,7 @@ public class Window : GameWindow
 
       IsVisible = true;
 
-      GL.ClearColor(new Color4(0.1f, 0.1f, 0.1f, 1.0f));
+      GL.ClearColor(new Color4(0.8f, 0.8f, 0.8f, 1.0f));
       GL.Enable(EnableCap.DepthTest);
 
       GL.Enable(EnableCap.Blend);
@@ -410,7 +411,7 @@ public class Window : GameWindow
             }
             else
             {
-               LampShader.SetVector3("diffuse", 0.05f * PointLights[i].Diffuse);
+               LampShader.SetVector3("diffuse", 0.5f * PointLights[i].Diffuse);
             }
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
@@ -434,7 +435,8 @@ public class Window : GameWindow
          }
       }
 
-
+      //Camera.Position = new Vector3(-2.0f, 1.0f, 3.0f);
+      //Camera.Position = new(-0.7f, 0.5f, 2.0f);
 
       // Графический интерфейс.
       _controller.Update(this, (float)e.Time);
